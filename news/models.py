@@ -17,3 +17,12 @@ class Post(models.Model):
 
     def total_votes(self):
         return self.upvotes.count() - self.downvotes.count()
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    upvotes = models.ManyToManyField(User, related_name='upvoted_comments', blank=True)
+    downvotes = models.ManyToManyField(User, related_name='downvoted_comments', blank=True)
