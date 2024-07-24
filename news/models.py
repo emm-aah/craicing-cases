@@ -26,3 +26,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     upvotes = models.ManyToManyField(User, related_name='upvoted_comments', blank=True)
     downvotes = models.ManyToManyField(User, related_name='downvoted_comments', blank=True)
+
+
+    def total_votes(self):
+        return self.upvotes.count() - self.downvotes.count()
